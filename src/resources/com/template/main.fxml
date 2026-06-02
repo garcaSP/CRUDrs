@@ -18,7 +18,7 @@
          <children>
             <ImageView fitHeight="415.0" fitWidth="697.0" layoutX="-10.0" layoutY="-7.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../../../../../Downloads/images%20(3).jpg" />
+                  <Image url="@../images/images%20(3).jpg" />
                </image>
             </ImageView>
             <Button layoutX="572.0" layoutY="177.0" mnemonicParsing="false" onAction="#btnLimparAction" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #55BBDD;" text="Limpar">
@@ -38,12 +38,12 @@
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </TableView>
-            <TextField layoutX="475.0" layoutY="43.0" prefHeight="35.0" prefWidth="82.0" />
+            <TextField fx:id="txtId" layoutX="475.0" layoutY="43.0" prefHeight="35.0" prefWidth="82.0" />
             <Label layoutX="443.0" layoutY="50.0" text="ID" textFill="#ff7500" />
-            <TextField layoutX="475.0" layoutY="246.0" prefHeight="25.0" prefWidth="157.0" />
-            <TextField layoutX="475.0" layoutY="271.0" prefHeight="25.0" prefWidth="157.0" />
-            <TextField layoutX="475.0" layoutY="296.0" prefHeight="25.0" prefWidth="157.0" />
-            <TextField layoutX="475.0" layoutY="321.0" prefHeight="25.0" prefWidth="157.0" />
+            <TextField fx:id="txtNome" layoutX="475.0" layoutY="246.0" prefHeight="25.0" prefWidth="157.0" />
+            <TextField fx:id="txtCidade" layoutX="475.0" layoutY="271.0" prefHeight="25.0" prefWidth="157.0" />
+            <TextField fx:id="txtEstadio" layoutX="475.0" layoutY="296.0" prefHeight="25.0" prefWidth="157.0" />
+            <TextField fx:id="txtMascote" layoutX="475.0" layoutY="321.0" prefHeight="25.0" prefWidth="157.0" />
             <Label layoutX="422.0" layoutY="250.0" text="Nome" textFill="#ff7500">
                <font>
                   <Font name="Comic Sans MS" size="12.0" />

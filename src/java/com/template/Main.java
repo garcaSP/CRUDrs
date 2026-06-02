@@ -11,7 +11,7 @@ public class Main extends Application
     public void start(Stage stage) throws Exception
     {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("main.fxml"));
-        Scene scene = new Scene(loader.load(),600,400);
+        Scene scene = new Scene(loader.load(),679,400);
 
         stage.setTitle("CRUD Gaucho - Cadastro Times do Rio Grande do Sul Porto Alegre Caxias do Sul Pelotas Uruguaiana Sao Leopoldo Erechim");
         stage.setScene(scene);

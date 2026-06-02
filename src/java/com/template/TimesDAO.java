@@ -1,4 +1,4 @@
-package model.dao;
+package com.template;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import model.Conexao;
-import model.dto.TimesDTO;
 
 public class TimesDAO {
 

@@ -1,4 +1,4 @@
-package model.dto;
+package com.template;
 
 public class TimesDTO {
     private String sigla;
