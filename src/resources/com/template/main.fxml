@@ -26,13 +26,13 @@
                   <Font name="Comic Sans MS" size="12.0" />
                </font>
             </Button>
-            <TableView layoutX="15.0" layoutY="19.0" prefHeight="366.0" prefWidth="401.0">
+            <TableView fx:id="tblTimes" layoutX="15.0" layoutY="19.0" onMouseClicked="#carregarCampos" prefHeight="366.0" prefWidth="401.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="Sigla" />
-                <TableColumn prefWidth="77.0" text="Nome" />
-                  <TableColumn prefWidth="77.0" text="Cidade" />
-                  <TableColumn prefWidth="77.0" text="Estadio" />
-                  <TableColumn prefWidth="77.0" text="Mascote" />
+                <TableColumn fx:id="colSigla" prefWidth="75.0" text="Sigla" />
+                <TableColumn fx:id="colNome" prefWidth="77.0" text="Nome" />
+                  <TableColumn fx:id="colCidade" prefWidth="77.0" text="Cidade" />
+                  <TableColumn fx:id="colEstadio" prefWidth="77.0" text="Estadio" />
+                  <TableColumn fx:id="colMascote" prefWidth="77.0" text="Mascote" />
               </columns>
                <cursor>
                   <Cursor fx:constant="CLOSED_HAND" />

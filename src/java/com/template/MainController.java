@@ -8,7 +8,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
-import java.util.ArrayList;
+import java.util.List;
 
 public class MainController {
 
@@ -40,7 +40,7 @@ public class MainController {
 
     private void carregarTimes() {
         TimesDAO objTimesDAO = new TimesDAO();
-        ArrayList<TimesDTO> listaTimes = objTimesDAO.listarTimes();
+        List<TimesDTO> listaTimes = objTimesDAO.listarTimes();
         tblTimes.setItems(FXCollections.observableArrayList(listaTimes));
     }
 
@@ -95,7 +95,7 @@ public class MainController {
         objTimesDTO.setMascote(mascote);
 
         TimesDAO objTimesDAO = new TimesDAO();
-        objTimesDAO.alterarTime(objTimesDTO);
+        objTimesDAO.atualizarTime(objTimesDTO);
         btnLimparAction(event);
         carregarTimes();
     }
@@ -106,7 +106,7 @@ public class MainController {
         TimesDTO objTimesDTO = new TimesDTO();
         objTimesDTO.setSigla(sigla);
         TimesDAO objTimesDAO = new TimesDAO();
-        objTimesDAO.excluirTime(objTimesDTO);
+        objTimesDAO.deletarTime(objTimesDTO.getSigla());
         btnLimparAction(event);
         carregarTimes();
     }
