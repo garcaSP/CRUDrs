@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import java.util.List;
+import javafx.scene.control.Label;
 
 public class MainController {
 
@@ -25,6 +26,13 @@ public class MainController {
     @FXML private TableColumn<TimesDTO, String> colCidade;
     @FXML private TableColumn<TimesDTO, String> colEstadio;
     @FXML private TableColumn<TimesDTO, String> colMascote;
+
+    @FXML private Label txtInfo;
+
+    private void mostrarInfo(String mensagem) {
+        txtInfo.setText(mensagem);
+        txtInfo.setStyle("-fx-text-fill: " + "green" + ";");
+    }
 
     @FXML
     private void initialize() {
@@ -68,6 +76,8 @@ public class MainController {
         objTimesDTO.setMascote(txtMascote.getText());
 
         TimesDAO objTimesDAO = new TimesDAO();
+
+        mostrarValidacao(objTimesDTO);
         objTimesDAO.cadastrarTime(objTimesDTO);
 
         btnLimparAction(event);
@@ -76,6 +86,7 @@ public class MainController {
 
     @FXML
     private void btnAtualizarAction(ActionEvent event) {
+
         TimesDTO selecionado = tblTimes.getSelectionModel().getSelectedItem();
         if (selecionado == null) return;
 
@@ -86,9 +97,10 @@ public class MainController {
         objTimesDTO.setCidade(txtCidade.getText());
         objTimesDTO.setEstadio(txtEstadio.getText());
         objTimesDTO.setMascote(txtMascote.getText());
+        mostrarValidacao(selecionado);
 
         TimesDAO objTimesDAO = new TimesDAO();
-        objTimesDAO.atualizarTime(objTimesDTO);
+        objTimesDAO.atualizarTime(selecionado);
 
         btnLimparAction(event);
         carregarTimes();
@@ -114,5 +126,10 @@ public class MainController {
         txtCidade.clear();
         txtEstadio.clear();
         txtMascote.clear();
+    }
+
+    private void mostrarValidacao(TimesDTO time) {
+        if (time.getSigla().isEmpty()) mostrarInfo("Sigla é obrigatória!");
+        if (time.getSigla().length() > 3) mostrarInfo("Sigla deve ter no máximo 3 letras!");
     }
 }
