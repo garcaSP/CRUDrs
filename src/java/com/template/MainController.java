@@ -1,6 +1,5 @@
 package com.template;
 
-
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TableColumn;
@@ -13,12 +12,14 @@ import java.util.List;
 public class MainController {
 
     @FXML private TextField txtId;
+    @FXML private TextField txtSigla;
     @FXML private TextField txtNome;
     @FXML private TextField txtCidade;
     @FXML private TextField txtEstadio;
     @FXML private TextField txtMascote;
 
     @FXML private TableView<TimesDTO> tblTimes;
+    @FXML private TableColumn<TimesDTO, Integer> colId;
     @FXML private TableColumn<TimesDTO, String> colSigla;
     @FXML private TableColumn<TimesDTO, String> colNome;
     @FXML private TableColumn<TimesDTO, String> colCidade;
@@ -27,8 +28,7 @@ public class MainController {
 
     @FXML
     private void initialize() {
-        System.out.println("FXML loaded successfully!");
-
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colSigla.setCellValueFactory(new PropertyValueFactory<>("sigla"));
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colCidade.setCellValueFactory(new PropertyValueFactory<>("cidade"));
@@ -49,7 +49,8 @@ public class MainController {
         TimesDTO objTimesDTO = tblTimes.getSelectionModel().getSelectedItem();
 
         if (objTimesDTO != null) {
-            txtId.setText(objTimesDTO.getSigla());
+            txtId.setText(String.valueOf(objTimesDTO.getId()));
+            txtSigla.setText(objTimesDTO.getSigla());
             txtNome.setText(objTimesDTO.getNome());
             txtCidade.setText(objTimesDTO.getCidade());
             txtEstadio.setText(objTimesDTO.getEstadio());
@@ -59,18 +60,12 @@ public class MainController {
 
     @FXML
     private void btnSalvarAction(ActionEvent event) {
-        String sigla = txtId.getText();
-        String nome = txtNome.getText();
-        String cidade = txtCidade.getText();
-        String estadio = txtEstadio.getText();
-        String mascote = txtMascote.getText();
-
         TimesDTO objTimesDTO = new TimesDTO();
-        objTimesDTO.setSigla(sigla);
-        objTimesDTO.setNome(nome);
-        objTimesDTO.setCidade(cidade);
-        objTimesDTO.setEstadio(estadio);
-        objTimesDTO.setMascote(mascote);
+        objTimesDTO.setSigla(txtSigla.getText());
+        objTimesDTO.setNome(txtNome.getText());
+        objTimesDTO.setCidade(txtCidade.getText());
+        objTimesDTO.setEstadio(txtEstadio.getText());
+        objTimesDTO.setMascote(txtMascote.getText());
 
         TimesDAO objTimesDAO = new TimesDAO();
         objTimesDAO.cadastrarTime(objTimesDTO);
@@ -81,32 +76,32 @@ public class MainController {
 
     @FXML
     private void btnAtualizarAction(ActionEvent event) {
-        String sigla = txtId.getText();
-        String nome = txtNome.getText();
-        String cidade = txtCidade.getText();
-        String estadio = txtEstadio.getText();
-        String mascote = txtMascote.getText();
+        TimesDTO selecionado = tblTimes.getSelectionModel().getSelectedItem();
+        if (selecionado == null) return;
 
         TimesDTO objTimesDTO = new TimesDTO();
-        objTimesDTO.setSigla(sigla);
-        objTimesDTO.setNome(nome);
-        objTimesDTO.setCidade(cidade);
-        objTimesDTO.setEstadio(estadio);
-        objTimesDTO.setMascote(mascote);
+        objTimesDTO.setId(selecionado.getId());
+        objTimesDTO.setSigla(txtSigla.getText());
+        objTimesDTO.setNome(txtNome.getText());
+        objTimesDTO.setCidade(txtCidade.getText());
+        objTimesDTO.setEstadio(txtEstadio.getText());
+        objTimesDTO.setMascote(txtMascote.getText());
 
         TimesDAO objTimesDAO = new TimesDAO();
         objTimesDAO.atualizarTime(objTimesDTO);
+
         btnLimparAction(event);
         carregarTimes();
     }
 
     @FXML
     private void btnDeletarAction(ActionEvent event) {
-        String sigla = txtId.getText();
-        TimesDTO objTimesDTO = new TimesDTO();
-        objTimesDTO.setSigla(sigla);
+        TimesDTO selecionado = tblTimes.getSelectionModel().getSelectedItem();
+        if (selecionado == null) return;
+
         TimesDAO objTimesDAO = new TimesDAO();
-        objTimesDAO.deletarTime(objTimesDTO.getSigla());
+        objTimesDAO.deletarTime(selecionado.getId());
+
         btnLimparAction(event);
         carregarTimes();
     }
@@ -114,6 +109,7 @@ public class MainController {
     @FXML
     private void btnLimparAction(ActionEvent event) {
         txtId.clear();
+        txtSigla.clear();
         txtNome.clear();
         txtCidade.clear();
         txtEstadio.clear();

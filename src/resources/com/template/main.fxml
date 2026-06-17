@@ -13,74 +13,88 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.MainController">
-   <children>
-      <Pane prefHeight="400.0" prefWidth="679.0" style="-fx-background-color: #ABCDEF;">
-         <children>
-            <ImageView fitHeight="415.0" fitWidth="697.0" layoutX="-10.0" layoutY="-7.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../images/images%20(3).jpg" />
-               </image>
-            </ImageView>
-            <Button layoutX="572.0" layoutY="177.0" mnemonicParsing="false" onAction="#btnLimparAction" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #55BBDD;" text="Limpar">
+    <children>
+        <Pane prefHeight="400.0" prefWidth="679.0" style="-fx-background-color: #0B196C;">
+            <children>
+                <ImageView fitHeight="409.0" fitWidth="443.0" layoutX="-10.0" layoutY="-7.0" pickOnBounds="true">
+                    <image>
+                        <Image url="@../images/images%20(3).jpg" />
+                    </image>
+                </ImageView>
+                <Button layoutX="572.0" layoutY="177.0" mnemonicParsing="false" onAction="#btnLimparAction" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #55BBDD;" text="Limpar">
+                    <font>
+                        <Font name="ArtifaktElement-Regular" size="12.0" />
+                    </font>
+                </Button>
+                <TableView fx:id="tblTimes" layoutY="41.0" onMouseClicked="#carregarCampos" prefHeight="359.0" prefWidth="434.0">
+                    <columns>
+                        <TableColumn fx:id="colSigla" prefWidth="75.0" text="Sigla" />
+                        <TableColumn fx:id="colNome" prefWidth="77.0" text="Nome" />
+                        <TableColumn fx:id="colCidade" prefWidth="77.0" text="Cidade" />
+                        <TableColumn fx:id="colEstadio" prefWidth="77.0" text="Estadio" />
+                        <TableColumn fx:id="colMascote" prefWidth="77.0" text="Mascote" />
+                        <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
+                    </columns>
+                    <cursor>
+                        <Cursor fx:constant="CLOSED_HAND" />
+                    </cursor>
+                </TableView>
+                <TextField fx:id="txtId" editable="false" layoutX="475.0" layoutY="43.0" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #cccccc;" />
+                <Label layoutX="443.0" layoutY="50.0" text="ID" textFill="#ffde00">
                <font>
-                  <Font name="Comic Sans MS" size="12.0" />
-               </font>
-            </Button>
-            <TableView fx:id="tblTimes" layoutX="15.0" layoutY="19.0" onMouseClicked="#carregarCampos" prefHeight="366.0" prefWidth="401.0">
-              <columns>
-                <TableColumn fx:id="colSigla" prefWidth="75.0" text="Sigla" />
-                <TableColumn fx:id="colNome" prefWidth="77.0" text="Nome" />
-                  <TableColumn fx:id="colCidade" prefWidth="77.0" text="Cidade" />
-                  <TableColumn fx:id="colEstadio" prefWidth="77.0" text="Estadio" />
-                  <TableColumn fx:id="colMascote" prefWidth="77.0" text="Mascote" />
-              </columns>
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </TableView>
-            <TextField fx:id="txtId" layoutX="475.0" layoutY="43.0" prefHeight="35.0" prefWidth="82.0" />
-            <Label layoutX="443.0" layoutY="50.0" text="ID" textFill="#ff7500" />
-            <TextField fx:id="txtNome" layoutX="475.0" layoutY="246.0" prefHeight="25.0" prefWidth="157.0" />
-            <TextField fx:id="txtCidade" layoutX="475.0" layoutY="271.0" prefHeight="25.0" prefWidth="157.0" />
-            <TextField fx:id="txtEstadio" layoutX="475.0" layoutY="296.0" prefHeight="25.0" prefWidth="157.0" />
-            <TextField fx:id="txtMascote" layoutX="475.0" layoutY="321.0" prefHeight="25.0" prefWidth="157.0" />
-            <Label layoutX="422.0" layoutY="250.0" text="Nome" textFill="#ff7500">
-               <font>
-                  <Font name="Comic Sans MS" size="12.0" />
+                  <Font name="ArtifaktElement-Medium" size="14.0" />
                </font></Label>
-            <Label layoutX="422.0" layoutY="275.0" text="Cidade" textFill="#ff7500">
+                <Label layoutX="441.0" layoutY="224.0" text="Sigla" textFill="#ffde00">
+                    <font>
+                        <Font name="ArtifaktElement-Medium" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="txtSigla" layoutX="499.0" layoutY="221.0" prefHeight="25.0" prefWidth="157.0" />
+                <TextField fx:id="txtNome" layoutX="499.0" layoutY="246.0" prefHeight="25.0" prefWidth="157.0" />
+                <TextField fx:id="txtCidade" layoutX="499.0" layoutY="271.0" prefHeight="25.0" prefWidth="157.0" />
+                <TextField fx:id="txtEstadio" layoutX="499.0" layoutY="296.0" prefHeight="25.0" prefWidth="157.0" />
+                <TextField fx:id="txtMascote" layoutX="499.0" layoutY="321.0" prefHeight="25.0" prefWidth="157.0" />
+                <Label layoutX="441.0" layoutY="249.0" text="Nome" textFill="#ffde00">
+                    <font>
+                        <Font name="ArtifaktElement-Medium" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="441.0" layoutY="274.0" text="Cidade" textFill="#ffde00">
+                    <font>
+                        <Font name="ArtifaktElement-Medium" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="441.0" layoutY="299.0" text="Estadio" textFill="#ffde00">
+                    <font>
+                        <Font name="ArtifaktElement-Medium" size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="438.0" layoutY="324.0" text="Mascote" textFill="#ffde00">
+                    <font>
+                        <Font name="ArtifaktElement-Medium" size="14.0" />
+                    </font>
+                </Label>
+                <Button layoutX="572.0" layoutY="85.0" mnemonicParsing="false" onAction="#btnAtualizarAction" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #CCCC44;" text="Atualizar" textFill="WHITE">
+                    <font>
+                        <Font name="ArtifaktElement-Regular" size="12.0" />
+                    </font>
+                </Button>
+                <Button layoutX="572.0" layoutY="131.0" mnemonicParsing="false" onAction="#btnDeletarAction" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #BB5555;" text="Deletar" textFill="WHITE">
+                    <font>
+                        <Font name="ArtifaktElement-Regular" size="12.0" />
+                    </font>
+                </Button>
+                <Button layoutX="572.0" layoutY="41.0" mnemonicParsing="false" onAction="#btnSalvarAction" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #55BB55;" text="Salvar" textFill="WHITE">
+                    <font>
+                        <Font name="ArtifaktElement-Regular" size="12.0" />
+                    </font>
+                </Button>
+            <Label layoutX="152.0" layoutY="5.0" prefHeight="35.0" prefWidth="375.0" text="Sistema De Cadastro De times" textFill="#ff7500">
                <font>
-                  <Font name="Comic Sans MS" size="12.0" />
-               </font></Label>
-            <Label layoutX="422.0" layoutY="300.0" text="Estadio" textFill="#ff7500">
-               <font>
-                  <Font name="Comic Sans MS" size="12.0" />
-               </font></Label>
-            <Label layoutX="419.0" layoutY="325.0" text="Mascote" textFill="#ff7500">
-               <font>
-                  <Font name="Comic Sans MS" size="12.0" />
-               </font></Label>
-            <Button layoutX="572.0" layoutY="85.0" mnemonicParsing="false" onAction="#btnAtualizarAction" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #CCCC44;" text="Atualizar" textFill="WHITE">
-               <font>
-                  <Font name="Comic Sans MS" size="12.0" />
+                  <Font name="ArtifaktElement-Regular" size="24.0" />
                </font>
-            </Button>
-            <Button layoutX="572.0" layoutY="131.0" mnemonicParsing="false" onAction="#btnDeletarAction" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #BB5555;" text="Deletar" textFill="WHITE">
-               <font>
-                  <Font name="Comic Sans MS" size="12.0" />
-               </font>
-            </Button>
-            <Button layoutX="572.0" layoutY="41.0" mnemonicParsing="false" onAction="#btnSalvarAction" prefHeight="35.0" prefWidth="82.0" style="-fx-background-color: #55BB55;" text="Salvar" textFill="WHITE">
-               <font>
-                  <Font name="Comic Sans MS" size="12.0" />
-               </font>
-            </Button>
-            <ImageView fitHeight="104.0" fitWidth="115.0" layoutX="438.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../Downloads/image0.jpeg" />
-               </image>
-            </ImageView>
-         </children>
-      </Pane>
-   </children>
+            </Label>
+            </children>
+        </Pane>
+    </children>
 </AnchorPane>

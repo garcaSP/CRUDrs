@@ -1,6 +1,7 @@
 package com.template;
 
 public class TimesDTO {
+    private int id;
     private String sigla;
     private String nome;
     private String cidade;
@@ -46,4 +47,8 @@ public class TimesDTO {
     public void setMascote(String mascote) {
         this.mascote = mascote;
     }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 }

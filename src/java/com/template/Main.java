@@ -13,7 +13,7 @@ public class Main extends Application
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("main.fxml"));
         Scene scene = new Scene(loader.load(),679,400);
 
-        stage.setTitle("CRUD Gaucho - Cadastro Times do Rio Grande do Sul Porto Alegre Caxias do Sul Pelotas Uruguaiana Sao Leopoldo Erechim");
+        stage.setTitle("Sistema CRUD - Times");
         stage.setScene(scene);
         stage.show();
     }

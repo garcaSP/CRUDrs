@@ -28,11 +28,9 @@ public class TimesDAO {
             pstm.setString(5, time.getMascote());
 
             pstm.execute();
-            System.out.println("Sucesso: Time cadastrado com êxito!");
 
         } catch (SQLException e) {
-
-            logger.log(Level.SEVERE, "Erro ao listar", e);
+            logger.log(Level.SEVERE, "Erro ao cadastrar", e);
         }
     }
 
@@ -46,6 +44,7 @@ public class TimesDAO {
 
             while (rs.next()) {
                 TimesDTO time = new TimesDTO();
+                time.setId(rs.getInt("id"));
                 time.setSigla(rs.getString("sigla"));
                 time.setNome(rs.getString("nome"));
                 time.setCidade(rs.getString("cidade"));
@@ -56,45 +55,41 @@ public class TimesDAO {
             }
 
         } catch (SQLException e) {
-
             logger.log(Level.SEVERE, "Erro ao listar", e);
         }
         return lista;
     }
 
     public void atualizarTime(TimesDTO time) {
-        String sql = "UPDATE timesrs SET nome = ?, cidade = ?, estadio = ?, mascote = ? WHERE sigla = ?";
+        String sql = "UPDATE timesrs SET sigla = ?, nome = ?, cidade = ?, estadio = ?, mascote = ? WHERE id = ?";
 
         try (Connection conn = new Conexao().conectaBD();
              PreparedStatement pstm = conn.prepareStatement(sql)) {
 
-            pstm.setString(1, time.getNome());
-            pstm.setString(2, time.getCidade());
-            pstm.setString(3, time.getEstadio());
-            pstm.setString(4, time.getMascote());
-            pstm.setString(5, time.getSigla());
+            pstm.setString(1, time.getSigla());
+            pstm.setString(2, time.getNome());
+            pstm.setString(3, time.getCidade());
+            pstm.setString(4, time.getEstadio());
+            pstm.setString(5, time.getMascote());
+            pstm.setInt(6, time.getId());
 
             pstm.executeUpdate();
-            System.out.println("Sucesso: Dados do time atualizados!");
 
         } catch (SQLException e) {
-
             logger.log(Level.SEVERE, "Erro ao atualizar", e);
         }
     }
 
-    public void deletarTime(String sigla) {
-        String sql = "DELETE FROM timesrs WHERE sigla = ?";
+    public void deletarTime(int id) {
+        String sql = "DELETE FROM timesrs WHERE id = ?";
 
         try (Connection conn = new Conexao().conectaBD();
              PreparedStatement pstm = conn.prepareStatement(sql)) {
 
-            pstm.setString(1, sigla);
+            pstm.setInt(1, id);
             pstm.executeUpdate();
-            System.out.println("Sucesso: Time removido do sistema!");
 
         } catch (SQLException e) {
-
             logger.log(Level.SEVERE, "Erro ao deletar", e);
         }
     }
