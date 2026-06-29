@@ -18,6 +18,7 @@ public class MainController {
     @FXML private TextField txtCidade;
     @FXML private TextField txtEstadio;
     @FXML private TextField txtMascote;
+    @FXML private Label txtInfo;
 
     @FXML private TableView<TimesDTO> tblTimes;
     @FXML private TableColumn<TimesDTO, Integer> colId;
@@ -26,13 +27,6 @@ public class MainController {
     @FXML private TableColumn<TimesDTO, String> colCidade;
     @FXML private TableColumn<TimesDTO, String> colEstadio;
     @FXML private TableColumn<TimesDTO, String> colMascote;
-
-    @FXML private Label txtInfo;
-
-    private void mostrarInfo(String mensagem) {
-        txtInfo.setText(mensagem);
-        txtInfo.setStyle("-fx-text-fill: " + "green" + ";");
-    }
 
     @FXML
     private void initialize() {
@@ -66,6 +60,31 @@ public class MainController {
         }
     }
 
+    private void setInfo(String mensagem, String cor) {
+        txtInfo.setText(mensagem);
+        txtInfo.setStyle("-fx-text-fill: " + cor + ";");
+    }
+
+    private boolean validar(TimesDTO time) {
+        txtSigla.setStyle("");
+        txtNome.setStyle("");
+        boolean valido = true;
+
+        if (time.getSigla().isBlank() || time.getSigla().length() > 3) {
+            txtSigla.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+            setInfo("Sigla inválida! Deve ter entre 1 e 3 letras.", "red");
+            valido = false;
+        }
+
+        if (time.getNome().isBlank()) {
+            txtNome.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+            setInfo("Nome é obrigatório!", "red");
+            valido = false;
+        }
+
+        return valido;
+    }
+
     @FXML
     private void btnSalvarAction(ActionEvent event) {
         TimesDTO objTimesDTO = new TimesDTO();
@@ -75,20 +94,21 @@ public class MainController {
         objTimesDTO.setEstadio(txtEstadio.getText());
         objTimesDTO.setMascote(txtMascote.getText());
 
-        TimesDAO objTimesDAO = new TimesDAO();
+        if (!validar(objTimesDTO)) return;
 
-        mostrarValidacao(objTimesDTO);
-        objTimesDAO.cadastrarTime(objTimesDTO);
-
+        new TimesDAO().cadastrarTime(objTimesDTO);
+        setInfo("Time cadastrado com sucesso!", "green");
         btnLimparAction(event);
         carregarTimes();
     }
 
     @FXML
     private void btnAtualizarAction(ActionEvent event) {
-
         TimesDTO selecionado = tblTimes.getSelectionModel().getSelectedItem();
-        if (selecionado == null) return;
+        if (selecionado == null) {
+            setInfo("Selecione um time na tabela!", "red");
+            return;
+        }
 
         TimesDTO objTimesDTO = new TimesDTO();
         objTimesDTO.setId(selecionado.getId());
@@ -97,11 +117,11 @@ public class MainController {
         objTimesDTO.setCidade(txtCidade.getText());
         objTimesDTO.setEstadio(txtEstadio.getText());
         objTimesDTO.setMascote(txtMascote.getText());
-        mostrarValidacao(selecionado);
 
-        TimesDAO objTimesDAO = new TimesDAO();
-        objTimesDAO.atualizarTime(selecionado);
+        if (!validar(objTimesDTO)) return;
 
+        new TimesDAO().atualizarTime(objTimesDTO);
+        setInfo("Time atualizado com sucesso!", "green");
         btnLimparAction(event);
         carregarTimes();
     }
@@ -109,11 +129,13 @@ public class MainController {
     @FXML
     private void btnDeletarAction(ActionEvent event) {
         TimesDTO selecionado = tblTimes.getSelectionModel().getSelectedItem();
-        if (selecionado == null) return;
+        if (selecionado == null) {
+            setInfo("Selecione um time para deletar!", "red");
+            return;
+        }
 
-        TimesDAO objTimesDAO = new TimesDAO();
-        objTimesDAO.deletarTime(selecionado.getId());
-
+        new TimesDAO().deletarTime(selecionado.getId());
+        setInfo("Time deletado com sucesso!", "green");
         btnLimparAction(event);
         carregarTimes();
     }
@@ -122,14 +144,12 @@ public class MainController {
     private void btnLimparAction(ActionEvent event) {
         txtId.clear();
         txtSigla.clear();
+        txtSigla.setStyle("");
         txtNome.clear();
+        txtNome.setStyle("");
         txtCidade.clear();
         txtEstadio.clear();
         txtMascote.clear();
-    }
-
-    private void mostrarValidacao(TimesDTO time) {
-        if (time.getSigla().isEmpty()) mostrarInfo("Sigla é obrigatória!");
-        if (time.getSigla().length() > 3) mostrarInfo("Sigla deve ter no máximo 3 letras!");
+        //btn limpar pode chamar funcao limpar (com tudo isso) e chamar o setInfo("") pra limpar a label info
     }
 }

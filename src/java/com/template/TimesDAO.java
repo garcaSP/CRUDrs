@@ -16,79 +16,67 @@ public class TimesDAO {
     private static final Logger logger = Logger.getLogger(TimesDAO.class.getName());
 
     public void cadastrarTime(TimesDTO time) {
-        if(!time.getSigla().isBlank() || !time.getNome().isBlank()) {
-            if(time.getSigla().length() <= 3)
-            {
-                String sql = "INSERT INTO timesrs (sigla, nome, cidade, estadio, mascote) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO timesrs (sigla, nome, cidade, estadio, mascote) VALUES (?, ?, ?, ?, ?)";
 
-                try (Connection conn = new Conexao().conectaBD();
-                     PreparedStatement pstm = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexao().conectaBD();
+             PreparedStatement pstm = conn.prepareStatement(sql)) {
 
-                    pstm.setString(1, time.getSigla().toUpperCase());
-                    pstm.setString(2, time.getNome());
-                    pstm.setString(3, time.getCidade());
-                    pstm.setString(4, time.getEstadio());
-                    pstm.setString(5, time.getMascote());
+            pstm.setString(1, time.getSigla().toUpperCase());
+            pstm.setString(2, time.getNome());
+            pstm.setString(3, time.getCidade());
+            pstm.setString(4, time.getEstadio());
+            pstm.setString(5, time.getMascote());
 
-                    pstm.execute();
+            pstm.execute();
 
-                } catch (SQLException e) {
-                    logger.log(Level.SEVERE, "Erro ao cadastrar", e);
-                }
-            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao cadastrar", e);
         }
     }
 
     public List<TimesDTO> listarTimes() {
-                String sql = "SELECT * FROM timesrs";
-                List<TimesDTO> lista = new ArrayList<>();
+        String sql = "SELECT * FROM timesrs";
+        List<TimesDTO> lista = new ArrayList<>();
 
-                try (Connection conn = new Conexao().conectaBD();
-                     PreparedStatement pstm = conn.prepareStatement(sql);
-                     ResultSet rs = pstm.executeQuery()) {
+        try (Connection conn = new Conexao().conectaBD();
+             PreparedStatement pstm = conn.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
 
-                    while (rs.next()) {
-                        TimesDTO time = new TimesDTO();
-                        time.setId(rs.getInt("id"));
-                        time.setSigla(rs.getString("sigla"));
-                        time.setNome(rs.getString("nome"));
-                        time.setCidade(rs.getString("cidade"));
-                        time.setEstadio(rs.getString("estadio"));
-                        time.setMascote(rs.getString("mascote"));
+            while (rs.next()) {
+                TimesDTO time = new TimesDTO();
+                time.setId(rs.getInt("id"));
+                time.setSigla(rs.getString("sigla"));
+                time.setNome(rs.getString("nome"));
+                time.setCidade(rs.getString("cidade"));
+                time.setEstadio(rs.getString("estadio"));
+                time.setMascote(rs.getString("mascote"));
 
-                        lista.add(time);
-                    }
+                lista.add(time);
+            }
 
-                } catch (SQLException e) {
-                    logger.log(Level.SEVERE, "Erro ao listar", e);
-                }
-                return lista;
-
-
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao listar", e);
+        }
+        return lista;
     }
 
     public void atualizarTime(TimesDTO time) {
+        String sql = "UPDATE timesrs SET sigla = ?, nome = ?, cidade = ?, estadio = ?, mascote = ? WHERE id = ?";
 
-        if(!time.getSigla().isBlank() || !time.getNome().isBlank()) {
-            if (time.getSigla().length() <= 3) {
-                String sql = "UPDATE timesrs SET sigla = ?, nome = ?, cidade = ?, estadio = ?, mascote = ? WHERE id = ?";
+        try (Connection conn = new Conexao().conectaBD();
+             PreparedStatement pstm = conn.prepareStatement(sql)) {
 
-                try (Connection conn = new Conexao().conectaBD();
-                     PreparedStatement pstm = conn.prepareStatement(sql)) {
+            pstm.setString(1, time.getSigla().toUpperCase());
+            pstm.setString(2, time.getNome());
+            pstm.setString(3, time.getCidade());
+            pstm.setString(4, time.getEstadio());
+            pstm.setString(5, time.getMascote());
+            pstm.setInt(6, time.getId());
 
-                    pstm.setString(1, time.getSigla());
-                    pstm.setString(2, time.getNome());
-                    pstm.setString(3, time.getCidade());
-                    pstm.setString(4, time.getEstadio());
-                    pstm.setString(5, time.getMascote());
-                    pstm.setInt(6, time.getId());
+            pstm.executeUpdate();
 
-                    pstm.executeUpdate();
-
-                } catch (SQLException e) {
-                    logger.log(Level.SEVERE, "Erro ao atualizar", e);
-                }
-            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao atualizar", e);
         }
     }
 
