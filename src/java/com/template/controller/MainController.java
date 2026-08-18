@@ -1,5 +1,9 @@
-package com.template;
+package com.template.controller;
 
+import com.template.model.TimesDTO;
+import com.template.service.TimesService;
+import com.template.util.DialogUtil;
+import com.template.validator.TimesValidator;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TableColumn;
@@ -28,6 +32,8 @@ public class MainController {
     @FXML private TableColumn<TimesDTO, String> colEstadio;
     @FXML private TableColumn<TimesDTO, String> colMascote;
 
+    private final TimesService timesService = new TimesService();
+
     @FXML
     private void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -41,8 +47,7 @@ public class MainController {
     }
 
     private void carregarTimes() {
-        TimesDAO objTimesDAO = new TimesDAO();
-        List<TimesDTO> listaTimes = objTimesDAO.listarTimes();
+        List<TimesDTO> listaTimes = timesService.listarTimes();
         tblTimes.setItems(FXCollections.observableArrayList(listaTimes));
     }
 
@@ -60,44 +65,41 @@ public class MainController {
         }
     }
 
-    private void setInfo(String mensagem, String cor) {
-        txtInfo.setText(mensagem);
-        txtInfo.setStyle("-fx-text-fill: " + cor + ";");
-    }
-
-    private boolean validar(TimesDTO time) {
-        txtSigla.setStyle("");
-        txtNome.setStyle("");
-        boolean valido = true;
-
-        if (time.getSigla().isBlank() || time.getSigla().length() > 3) {
-            txtSigla.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
-            setInfo("Sigla inválida! Deve ter entre 1 e 3 letras.", "red");
-            valido = false;
-        }
-
-        if (time.getNome().isBlank()) {
-            txtNome.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
-            setInfo("Nome é obrigatório!", "red");
-            valido = false;
-        }
-
-        return valido;
-    }
-
-    @FXML
-    private void btnSalvarAction(ActionEvent event) {
+    private TimesDTO montarTimeDosCampos() {
         TimesDTO objTimesDTO = new TimesDTO();
         objTimesDTO.setSigla(txtSigla.getText());
         objTimesDTO.setNome(txtNome.getText());
         objTimesDTO.setCidade(txtCidade.getText());
         objTimesDTO.setEstadio(txtEstadio.getText());
         objTimesDTO.setMascote(txtMascote.getText());
+        return objTimesDTO;
+    }
 
-        if (!validar(objTimesDTO)) return;
+    private boolean tratarResultadoValidacao(TimesValidator.ValidationResult resultado) {
+        DialogUtil.limparEstiloCampo(txtSigla);
+        DialogUtil.limparEstiloCampo(txtNome);
 
-        new TimesDAO().cadastrarTime(objTimesDTO);
-        setInfo("Time cadastrado com sucesso!", "green");
+        if (!resultado.isSiglaValida()) {
+            DialogUtil.marcarCampoInvalido(txtSigla);
+        }
+        if (!resultado.isNomeValido()) {
+            DialogUtil.marcarCampoInvalido(txtNome);
+        }
+        if (!resultado.isValido()) {
+            DialogUtil.exibirErro(txtInfo, resultado.getMensagemErro());
+        }
+
+        return resultado.isValido();
+    }
+
+    @FXML
+    private void btnSalvarAction(ActionEvent event) {
+        TimesDTO objTimesDTO = montarTimeDosCampos();
+
+        TimesValidator.ValidationResult resultado = timesService.cadastrarTime(objTimesDTO);
+        if (!tratarResultadoValidacao(resultado)) return;
+
+        DialogUtil.exibirSucesso(txtInfo, "Time cadastrado com sucesso!");
         btnLimparAction(event);
         carregarTimes();
     }
@@ -106,22 +108,17 @@ public class MainController {
     private void btnAtualizarAction(ActionEvent event) {
         TimesDTO selecionado = tblTimes.getSelectionModel().getSelectedItem();
         if (selecionado == null) {
-            setInfo("Selecione um time na tabela!", "red");
+            DialogUtil.exibirErro(txtInfo, "Selecione um time na tabela!");
             return;
         }
 
-        TimesDTO objTimesDTO = new TimesDTO();
+        TimesDTO objTimesDTO = montarTimeDosCampos();
         objTimesDTO.setId(selecionado.getId());
-        objTimesDTO.setSigla(txtSigla.getText());
-        objTimesDTO.setNome(txtNome.getText());
-        objTimesDTO.setCidade(txtCidade.getText());
-        objTimesDTO.setEstadio(txtEstadio.getText());
-        objTimesDTO.setMascote(txtMascote.getText());
 
-        if (!validar(objTimesDTO)) return;
+        TimesValidator.ValidationResult resultado = timesService.atualizarTime(objTimesDTO);
+        if (!tratarResultadoValidacao(resultado)) return;
 
-        new TimesDAO().atualizarTime(objTimesDTO);
-        setInfo("Time atualizado com sucesso!", "green");
+        DialogUtil.exibirSucesso(txtInfo, "Time atualizado com sucesso!");
         btnLimparAction(event);
         carregarTimes();
     }
@@ -130,12 +127,12 @@ public class MainController {
     private void btnDeletarAction(ActionEvent event) {
         TimesDTO selecionado = tblTimes.getSelectionModel().getSelectedItem();
         if (selecionado == null) {
-            setInfo("Selecione um time para deletar!", "red");
+            DialogUtil.exibirErro(txtInfo, "Selecione um time para deletar!");
             return;
         }
 
-        new TimesDAO().deletarTime(selecionado.getId());
-        setInfo("Time deletado com sucesso!", "green");
+        timesService.deletarTime(selecionado.getId());
+        DialogUtil.exibirSucesso(txtInfo, "Time deletado com sucesso!");
         btnLimparAction(event);
         carregarTimes();
     }
@@ -144,12 +141,11 @@ public class MainController {
     private void btnLimparAction(ActionEvent event) {
         txtId.clear();
         txtSigla.clear();
-        txtSigla.setStyle("");
+        DialogUtil.limparEstiloCampo(txtSigla);
         txtNome.clear();
-        txtNome.setStyle("");
+        DialogUtil.limparEstiloCampo(txtNome);
         txtCidade.clear();
         txtEstadio.clear();
         txtMascote.clear();
-        //btn limpar pode chamar funcao limpar (com tudo isso) e chamar o setInfo("") pra limpar a label info
     }
 }

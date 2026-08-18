@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.MainController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.controller.MainController">
     <children>
         <Pane prefHeight="400.0" prefWidth="679.0" style="-fx-background-color: #0B196C;">
             <children>
-            <Label fx:id="txtInfo" layoutX="449.0" layoutY="369.0" text="Label" textFill="WHITE" />
+            <Label fx:id="txtInfo" layoutX="449.0" layoutY="369.0" textFill="WHITE" />
                 <ImageView fitHeight="409.0" fitWidth="443.0" layoutX="-10.0" layoutY="-7.0" pickOnBounds="true">
                     <image>
                         <Image url="@../images/images%20(3).jpg" />
