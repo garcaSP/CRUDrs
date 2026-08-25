@@ -3,6 +3,7 @@ package com.template.service;
 import com.template.model.TimesDAO;
 import com.template.model.TimesDTO;
 import com.template.validator.TimesValidator;
+import com.template.validator.ValidationResult;
 
 import java.util.List;
 
@@ -15,16 +16,16 @@ public class TimesService {
         return timesDAO.listarTimes();
     }
 
-    public TimesValidator.ValidationResult cadastrarTime(TimesDTO time) {
-        TimesValidator.ValidationResult resultado = timesValidator.validar(time);
+    public ValidationResult cadastrarTime(TimesDTO time) {
+        ValidationResult resultado = timesValidator.validar(time);
         if (resultado.isValido()) {
             timesDAO.cadastrarTime(time);
         }
         return resultado;
     }
 
-    public TimesValidator.ValidationResult atualizarTime(TimesDTO time) {
-        TimesValidator.ValidationResult resultado = timesValidator.validar(time);
+    public ValidationResult atualizarTime(TimesDTO time) {
+        ValidationResult resultado = timesValidator.validar(time);
         if (resultado.isValido()) {
             timesDAO.atualizarTime(time);
         }

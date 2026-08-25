@@ -3,7 +3,7 @@ package com.template.controller;
 import com.template.model.TimesDTO;
 import com.template.service.TimesService;
 import com.template.util.DialogUtil;
-import com.template.validator.TimesValidator;
+import com.template.validator.ValidationResult;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TableColumn;
@@ -75,14 +75,14 @@ public class MainController {
         return objTimesDTO;
     }
 
-    private boolean tratarResultadoValidacao(TimesValidator.ValidationResult resultado) {
+    private boolean tratarResultadoValidacao(ValidationResult resultado) {
         DialogUtil.limparEstiloCampo(txtSigla);
         DialogUtil.limparEstiloCampo(txtNome);
 
-        if (!resultado.isSiglaValida()) {
+        if (!resultado.isCampoValido("sigla")) {
             DialogUtil.marcarCampoInvalido(txtSigla);
         }
-        if (!resultado.isNomeValido()) {
+        if (!resultado.isCampoValido("nome")) {
             DialogUtil.marcarCampoInvalido(txtNome);
         }
         if (!resultado.isValido()) {
@@ -96,7 +96,7 @@ public class MainController {
     private void btnSalvarAction(ActionEvent event) {
         TimesDTO objTimesDTO = montarTimeDosCampos();
 
-        TimesValidator.ValidationResult resultado = timesService.cadastrarTime(objTimesDTO);
+        ValidationResult resultado = timesService.cadastrarTime(objTimesDTO);
         if (!tratarResultadoValidacao(resultado)) return;
 
         DialogUtil.exibirSucesso(txtInfo, "Time cadastrado com sucesso!");
@@ -115,7 +115,7 @@ public class MainController {
         TimesDTO objTimesDTO = montarTimeDosCampos();
         objTimesDTO.setId(selecionado.getId());
 
-        TimesValidator.ValidationResult resultado = timesService.atualizarTime(objTimesDTO);
+        ValidationResult resultado = timesService.atualizarTime(objTimesDTO);
         if (!tratarResultadoValidacao(resultado)) return;
 
         DialogUtil.exibirSucesso(txtInfo, "Time atualizado com sucesso!");
