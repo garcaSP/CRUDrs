@@ -5,16 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
-    static String conexao = "jdbc:postgresql://localhost:5432/crudRS";
-    static String usuario = "postgres";
-    static String senha = "postgres";
 
-    public Connection conectaBD() {
-        try {
-            return DriverManager.getConnection(conexao, usuario, senha);
-        } catch (SQLException e)
-        {
-            throw new RuntimeException(e.getMessage());
-        }
+    private static final String URL = "jdbc:postgresql://localhost:5432/crudRS";
+    private static final String USUARIO = "postgres";
+    private static final String SENHA = "postgres";
+
+    public Connection conectaBD() throws SQLException {
+        return DriverManager.getConnection(URL, USUARIO, SENHA);
     }
 }

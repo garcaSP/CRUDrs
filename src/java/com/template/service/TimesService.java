@@ -2,34 +2,27 @@ package com.template.service;
 
 import com.template.model.TimesDAO;
 import com.template.model.TimesDTO;
-import com.template.validator.TimesValidator;
-import com.template.validator.ValidationResult;
 
 import java.util.List;
 
 public class TimesService {
 
-    private final TimesDAO timesDAO = new TimesDAO();
-    private final TimesValidator timesValidator = new TimesValidator();
+    private final TimesDAO timesDAO;
+
+    public TimesService(TimesDAO timesDAO) {
+        this.timesDAO = timesDAO;
+    }
 
     public List<TimesDTO> listarTimes() {
         return timesDAO.listarTimes();
     }
 
-    public ValidationResult cadastrarTime(TimesDTO time) {
-        ValidationResult resultado = timesValidator.validar(time);
-        if (resultado.isValido()) {
-            timesDAO.cadastrarTime(time);
-        }
-        return resultado;
+    public void cadastrarTime(TimesDTO time) {
+        timesDAO.cadastrarTime(time);
     }
 
-    public ValidationResult atualizarTime(TimesDTO time) {
-        ValidationResult resultado = timesValidator.validar(time);
-        if (resultado.isValido()) {
-            timesDAO.atualizarTime(time);
-        }
-        return resultado;
+    public void atualizarTime(TimesDTO time) {
+        timesDAO.atualizarTime(time);
     }
 
     public void deletarTime(int id) {

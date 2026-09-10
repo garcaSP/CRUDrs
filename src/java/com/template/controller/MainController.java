@@ -3,16 +3,18 @@ package com.template.controller;
 import com.template.model.TimesDTO;
 import com.template.service.TimesService;
 import com.template.util.DialogUtil;
+import com.template.validator.ITimesValidador;
 import com.template.validator.ValidationResult;
-import javafx.fxml.FXML;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.collections.FXCollections;
+
 import java.util.List;
-import javafx.scene.control.Label;
 
 public class MainController {
 
@@ -32,7 +34,13 @@ public class MainController {
     @FXML private TableColumn<TimesDTO, String> colEstadio;
     @FXML private TableColumn<TimesDTO, String> colMascote;
 
-    private final TimesService timesService = new TimesService();
+    private final ITimesValidador timesValidador;
+    private final TimesService timesService;
+
+    public MainController(ITimesValidador timesValidador, TimesService timesService) {
+        this.timesValidador = timesValidador;
+        this.timesService = timesService;
+    }
 
     @FXML
     private void initialize() {
@@ -75,33 +83,26 @@ public class MainController {
         return objTimesDTO;
     }
 
-    private boolean tratarResultadoValidacao(ValidationResult resultado) {
-        DialogUtil.limparEstiloCampo(txtSigla);
-        DialogUtil.limparEstiloCampo(txtNome);
+    private boolean dadosValidos(TimesDTO time) {
+        ValidationResult resultado = timesValidador.validar(time);
 
-        if (!resultado.isCampoValido("sigla")) {
-            DialogUtil.marcarCampoInvalido(txtSigla);
-        }
-        if (!resultado.isCampoValido("nome")) {
-            DialogUtil.marcarCampoInvalido(txtNome);
-        }
         if (!resultado.isValido()) {
             DialogUtil.exibirErro(txtInfo, resultado.getMensagemErro());
+            return false;
         }
-
-        return resultado.isValido();
+        return true;
     }
 
     @FXML
     private void btnSalvarAction(ActionEvent event) {
         TimesDTO objTimesDTO = montarTimeDosCampos();
 
-        ValidationResult resultado = timesService.cadastrarTime(objTimesDTO);
-        if (!tratarResultadoValidacao(resultado)) return;
+        if (!dadosValidos(objTimesDTO)) return;
 
-        DialogUtil.exibirSucesso(txtInfo, "Time cadastrado com sucesso!");
-        btnLimparAction(event);
+        timesService.cadastrarTime(objTimesDTO);
+        limparCampos();
         carregarTimes();
+        DialogUtil.exibirSucesso(txtInfo, "Time cadastrado com sucesso!");
     }
 
     @FXML
@@ -115,12 +116,12 @@ public class MainController {
         TimesDTO objTimesDTO = montarTimeDosCampos();
         objTimesDTO.setId(selecionado.getId());
 
-        ValidationResult resultado = timesService.atualizarTime(objTimesDTO);
-        if (!tratarResultadoValidacao(resultado)) return;
+        if (!dadosValidos(objTimesDTO)) return;
 
-        DialogUtil.exibirSucesso(txtInfo, "Time atualizado com sucesso!");
-        btnLimparAction(event);
+        timesService.atualizarTime(objTimesDTO);
+        limparCampos();
         carregarTimes();
+        DialogUtil.exibirSucesso(txtInfo, "Time atualizado com sucesso!");
     }
 
     @FXML
@@ -132,20 +133,24 @@ public class MainController {
         }
 
         timesService.deletarTime(selecionado.getId());
-        DialogUtil.exibirSucesso(txtInfo, "Time deletado com sucesso!");
-        btnLimparAction(event);
+        limparCampos();
         carregarTimes();
+        DialogUtil.exibirSucesso(txtInfo, "Time deletado com sucesso!");
     }
 
     @FXML
     private void btnLimparAction(ActionEvent event) {
+        limparCampos();
+        DialogUtil.limparMensagem(txtInfo);
+    }
+
+    private void limparCampos() {
         txtId.clear();
         txtSigla.clear();
-        DialogUtil.limparEstiloCampo(txtSigla);
         txtNome.clear();
-        DialogUtil.limparEstiloCampo(txtNome);
         txtCidade.clear();
         txtEstadio.clear();
         txtMascote.clear();
+        tblTimes.getSelectionModel().clearSelection();
     }
 }

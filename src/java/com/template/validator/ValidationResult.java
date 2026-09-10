@@ -1,25 +1,26 @@
 package com.template.validator;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ValidationResult {
 
-    private final Map<String, String> erros = new LinkedHashMap<>();
+    private final List<String> erros = new ArrayList<>();
 
-    public void adicionarErro(String campo, String mensagem) {
-        erros.put(campo, mensagem);
+    public void adicionarErro(String mensagem) {
+        erros.add(mensagem);
     }
 
     public boolean isValido() {
         return erros.isEmpty();
     }
 
-    public boolean isCampoValido(String campo) {
-        return !erros.containsKey(campo);
+    public List<String> getErros() {
+        return Collections.unmodifiableList(erros);
     }
 
     public String getMensagemErro() {
-        return erros.values().stream().findFirst().orElse(null);
+        return String.join("\n", erros);
     }
 }
